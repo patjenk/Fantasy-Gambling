@@ -73,6 +73,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
+from template_settings import *
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -80,4 +81,5 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
+    'Fantasy_Gambling.bets',
 )
