@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     # to INSTALLED_APPS to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-    # Uncomment the next line to enable the admin:
+    (r'^user/(?P<user_name>\w+)/$', 'Fantasy_Gambling.bets.views.user_profile'),
     (r'^admin/', include(admin.site.urls)),
     (r'.*', 'Fantasy_Gambling.bets.views.index'),
     
