@@ -1,0 +1,23 @@
+<div class="inline-group">
+  <div class="tabular inline-related">
+<fieldset class="module">
+   <h2>Bet Lines</h2>
+   <table id="click_{{id}}">
+     <thead><tr>
+        <th>Id</th>
+        <th>Updated Datetime</th>
+        <th>Line</th>
+        <th>Odds</th>
+      </tr></thead>
+      {% for betline in betlines %}
+      <tr class="{% cycle row1,row2 %}">
+              <td><a href="/admin/bets/betline/{{ betline.id }}/" target="_blank">{{ betline.id }}</a></td>
+              <td>{{ betline.updated_datetime }}</td>
+              <td>{{ betline.line }}</td>
+              <td>{{ betline.odds }}</td>
+      </tr>
+      {% endfor %}
+   </table>
+</fieldset>
+  </div>
+</div>

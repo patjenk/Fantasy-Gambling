@@ -1,0 +1,14 @@
+<ol>
+{% for user in users %}
+    <li>
+    <a href="/user/{{ user.username }}/">
+    {% ifequal user.id current_user.id %}
+        <strong>{{ user.username }}</strong>
+    {% else %}
+        {{ user.username }}
+    {% endifequal %}
+    </a>
+     - ${{ user.score }} <br>
+    </li>
+{% endfor %}
+</ol>

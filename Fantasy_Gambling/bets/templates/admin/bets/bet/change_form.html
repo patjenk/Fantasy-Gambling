@@ -1,0 +1,9 @@
+{% extends "admin/change_form.html" %}
+
+{% load betline_tags %}
+
+{% block after_field_sets %}
+  {% if object_id %}
+    {% display_betlines_by_bet object_id %}
+  {% endif %}
+{% endblock %}

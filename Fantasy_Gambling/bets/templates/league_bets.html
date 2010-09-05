@@ -1,0 +1,50 @@
+                  <table class="wagerse">
+                      <tr>
+                          <td>
+                              Event
+                          </td>
+                          <td>
+                              Action
+                          </td>
+                          <td>
+                              Event Start Time
+                          </td>
+                          <td>
+                              Wager Amount
+                          </td>
+                          <td>
+                              Line
+                          </td>
+                          <td>
+                              Odds
+                          </td>
+                          <td>
+                              Payout
+                          </td>
+                      </tr>
+                      {% for bet in bets %}
+                      <tr>
+                          <td>
+                              {{ bet.betline.bet.event.name }}
+                          </td>
+                          <td>
+                              {{ bet.betline.bet.bet_type }}
+                          </td>
+                          <td>
+                              {{ bet.betline.bet.event.start_datetime }}
+                          </td>
+                          <td>
+                              {{ bet.amount }}
+                          </td>
+                          <td>
+                              {{ bet.betline.line }}
+                          </td>
+                          <td>
+                              {{ bet.betline.odds }}
+                          </td>
+                          <td>
+                              ${{ bet.score }}
+                          </td>
+                      </tr>
+                      {% endfor %}
+                  </table> <!-- end of table wagers active -->
