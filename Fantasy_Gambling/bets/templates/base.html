@@ -2,10 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>{% block title %}{% endblock %}</title>
-<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% load adminmedia %}{% admin_media_prefix %}css/base.css{% endblock %}" />
+<link rel="stylesheet" type="text/css" href="/site_media/style.css" />
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.0/themes/smoothness/jquery-ui.css" />
 {% block extrastyle %}{% endblock %}
 <!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="{% block stylesheet_ie %}{% load adminmedia %}{% admin_media_prefix %}css/ie.css{% endblock %}" /><![endif]-->
-<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+<meta name="robots" content="NONE,NOARCHIVE" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
+<script type="text/javascript">{% block extrajavascript %}{% endblock %}</script>
 </head>
 {% load i18n %}
 
@@ -14,19 +18,50 @@
 <!-- Container -->
 <div id="container">
 
-    {% if not is_popup %}
     <!-- Header -->
     <div id="header">
-   </div>
-    <!-- END Header -->
-        {% if messages %}
-        <ul class="messagelist">{% for message in messages %}
-          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-  {% endfor %}</ul>
+        <div id="branding">
+            <h1 id="site-name"><a href="/">Fantasy Gambling</a></h1>
+        </div>
+        {% if signed_in %}
+        <div id="user-tools">    
+            Hello, <strong><a href="/user/{{ request.user.username }}/">{{ request.user.username }}</a>.</strong>
+            You have ${{ request.user.getAvailableCapital }} available for wagering. 
+            <a href="/logout/" >Logout</a>
+        </div>
+        {% else %}
+        <div id="login-tools">
+            <form method="post" action=''>
+                <table id='login-table' >
+                    <tr>
+                        <td>
+                            <label for="username">Username</label>
+                        </td>
+                        <td>
+                            <label for="password">Password</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type='text' tabindex='1' name='username' /></td>
+                        <td><input type='password' tabindex='2' name='password' /></td>
+                        <td><input type='submit' tabindex='3' value='Login'/></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
         {% endif %}
-
+    </div>
+    <!-- END Header -->
     <!-- Content -->
     <div id="content" class="{% block coltype %}colM{% endblock %}">
+      {% if messages %}
+        <ul class="messagelist">
+          {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
         {% block pretitle %}{% endblock %}
         {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
         {% block content %}

@@ -1,26 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-    <head>
-        <title>Fantasy Gambling</title>
-    </head>
+{% extends "base.html" %}
+{% load i18n %}
 
-    <body>
+{% block content %}
+<div id="content-main">
+  <h1>Email Patrick to get an account.</h1>
+</div>
+{% endblock %}
 
-        <div>
-            {% if login_error %}
-            <div class="error_message">
-              Incorrect username or password. Please try again.
-            </div>
-            {% endif %} 
-           <form method='post' action='/'>
-                User Name:<input type='text' name='username' /><br />
-                Password: <input type='password' name='password' /><br />
-                <input type='submit' value='Log in' />
-            </form>
-        </div>
-
-    </body>
-
-</html> 
 

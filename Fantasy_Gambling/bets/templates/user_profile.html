@@ -1,8 +1,113 @@
-{% extends "base_site.html" %}
+{% extends "base.html" %}
 {% load i18n %}
+{% load league_standings %}
+{% load league_bets %}
+
+{% block extrajavascript %}
+  $(function() {
+    $("#league-tabs").tabs();
+  });
+{% endblock %}
 
 {% block content %}
 <div id="content-main">
-    User Profile.
+    <h1> {{ display_user.username }}</h1>
+
+
+    {% if display_user.getFantasyLeagues %}
+
+
+      <div id="league-tabs">
+          <ul>
+            {% for fantasy_league in display_user.getFantasyLeagues %}
+              <li><a href="#league-{{ fantasy_league.id }}">{{ fantasy_league.name }} (${% league_available_capital fantasy_league  display_user %})</a></li>
+            {% endfor %}
+              <li><a href="/joinleague/">Join New League</a></li>
+          </ul>
+          {% for fantasy_league in display_user.getFantasyLeagues %}
+          <div id="league-{{ fantasy_league.id }}">
+
+              <div class="rankings">
+                  <h3>League Standings</h3>
+                  {% league_standings fantasy_league request.user %}
+              </div> <!-- end of div rankings -->
+              <div class="picks">
+                  <h3>Active Wagers</h3>
+                  {% active_bets fantasy_league display_user %}
+                  {% ifequal display_user.id request.user.id %}
+                      <h3>Available Wagers</h3>
+                      <table class="wagers available">
+                          <tr>
+                              <td>
+                                  Event
+                              </td>
+                              <td>
+                                  Action
+                              </td>
+                              <td>
+                                  Line
+                              </td>
+                              <td>
+                                  Odds
+                              </td>
+                              <td>
+                                  Event Start Time
+                              </td>
+                              <td>
+                                  Wager Amount
+                              </td>
+                          </tr>
+                          {% for available_bet in display_user.getAvailableUserBets %}
+                          <tr>
+                              <td>
+                                  {{ available_bet.event.name }}
+                              </td>
+                              <td>
+                                  {{ available_bet.bet_type }}
+                              </td>
+                              <td>
+                                  {{ available_bet.current_betline.line }}
+                              </td>
+                              <td>
+                                  {{ available_bet.current_betline.odds }}
+                              </td>
+                              <td>
+                                  {{ available_bet.event.start_datetime }}
+                              </td>
+                              <td>
+                                  <form method="post" action="./">
+                                      <input type="hidden" name="place_bet" value="1" />
+                                      <input type="hidden" name="league" value="{{ fantasy_league.id }}" />
+                                      <input type="hidden" name="betline" value="{{ available_bet.current_betline.id }}" />
+                                      <input type="text" name="amount" class="bet_amount" />
+                                      <input type="Submit" value="Place Wager" />
+                                  </form>
+                              </td>
+                          </tr>
+                          {% endfor %}
+                      </table> <!-- end of wagers available -->
+                  {% endifequal %}
+              </div> <!-- end of div picks -->
+              <div class="past_performance">
+                  <h3>Wager History</h3>
+                  {% expired_bets fantasy_league display_user %}
+              </div> <!-- end of div past performance -->
+        </div> <!-- end of div fantasy league -->
+        {% endfor %}
+    </div> <!-- end of div league tabs -->
+
+
+    {% else %}
+        {% ifequal display_user.id request.user.id %}
+            <div id="league-tabs">
+                <ul>
+                    <li><a href="/joinleague/">Join New League</a></li>
+                </ul>
+            </div>
+        {% else %}
+            {{ display_user.username }} has not joined any leagues.
+        {% endifequal %}
+    {% endif %}
+
 </div>
 {% endblock %}
